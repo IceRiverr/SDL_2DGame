@@ -11,8 +11,7 @@ GameBox2D::GameBox2D() : IGame()
 	velocityIterations = 3;
 	positionIterations = 8;
 
-	barW = 8.0f;
-	barH = 1.6f;
+	
 }
 
 GameBox2D::~GameBox2D()
@@ -65,33 +64,65 @@ int GameBox2D::Init()
 	world->CreateJoint(&disJD);
 
 	// bar
-	barPos = b2Vec2(40.0f, 20.0f);
+	barW = 20.0f;
+	barH = 1.0f;
+	std::string BarP = std::string(SDL_GetBasePath()) + "Resources\\Other\\red_button00.png";
+	BarT = LoadImage(Engine::GetRenderer(), BarP);
+	barPos = b2Vec2(45.0f, 35.0f);
 	b2BodyDef barDef;
 	barDef.type = b2BodyType::b2_dynamicBody;
 	barDef.position = barPos;
-	barDef.linearDamping = 0.3f;
-	barDef.angularDamping = 0.2f;
+	barDef.linearDamping = 0.0f;
+	barDef.angularDamping = 0.0f;
 	barDef.allowSleep = true;
 	bar = world->CreateBody(&barDef);
 	b2PolygonShape barShape;
 	barShape.SetAsBox(barW * 0.5f, barH * 0.5f);
 	b2FixtureDef barFixture;
-	barFixture.density = 100.0f;
+	barFixture.density = 10.0f;
 	barFixture.shape = &barShape;
 	barFixture.friction = 0.2f;
 	bar->CreateFixture(&barFixture);
 
-	b2Vec2 anchor = b2Vec2(barPos.x - barW * 0.5f, barPos.y);
+	b2Vec2 anchor = b2Vec2(barPos.x - 0.5f * barW, barPos.y);
 	b2RevoluteJointDef reJD;
 	reJD.enableMotor = true;
-	reJD.motorSpeed = 0.0f;
-	reJD.maxMotorTorque = 10.0f;
+	reJD.motorSpeed = 10.0f;
+	reJD.maxMotorTorque = 80.0f;
 	reJD.Initialize(groundBody, bar, anchor);
 	reJ = world->CreateJoint(&reJD);
 
-	std::string BarP = std::string(SDL_GetBasePath()) + "Resources\\Other\\red_button00.png";
-	BarT = LoadImage(Engine::GetRenderer(),BarP);
+	// circular saw
+	sawRadius = 1.6f;
+	std::string circularSawP = std::string(SDL_GetBasePath()) + "Resources\\lettertiles\\PNG\\Wood\\letter_Q.png";
+	circularSawT = LoadImage(Engine::GetRenderer(), circularSawP);
 
+	b2BodyDef sawBD;
+	sawBD.type = b2_dynamicBody;
+	sawBD.position = barPos + b2Vec2(barW * 0.45f + sawRadius,0.0f);
+	
+	b2CircleShape sawCircle;
+	sawCircle.m_radius = sawRadius;
+
+	b2FixtureDef sawFD;
+	sawFD.shape = &sawCircle;
+	sawFD.density = 1.0f;
+	sawFD.friction = 0.9f;
+
+	sawBody = world->CreateBody(&sawBD);
+	sawBody->CreateFixture(&sawFD);
+
+	b2WheelJointDef sawWheelJD;
+	b2Vec2 axis(1.0f, 0.0f);// 设的太大会出错，我理解是局部坐标空间的bodyB的局部空间；
+	sawWheelJD.Initialize(bar, sawBody, sawBody->GetPosition(), axis);
+	sawWheelJD.motorSpeed = 10.0f;
+	sawWheelJD.maxMotorTorque = 20.0f;
+	sawWheelJD.enableMotor = true;
+	sawWheelJD.frequencyHz = 5.0f;
+	sawWheelJD.dampingRatio = 1.0f;
+	world->CreateJoint(&sawWheelJD);
+
+	// bridge
 	bridge = new Bridge();
 	bridge->SetPos(1.0f, 10.0f);
 	bridge->Create(world, groundBody);
@@ -126,7 +157,13 @@ void GameBox2D::Render()
 	SDL_RenderCopyEx(pRen, BarT, nullptr, &barRect, angle, &center, SDL_FLIP_HORIZONTAL);
 
 	bridge->Render(BarT);
-	
+
+	// saw
+	float sawAngle = -sawBody->GetAngle() * 57.2775475f;
+	SDL_Rect sawRect = {(sawBody->GetPosition().x - sawRadius) * Engine::PIXEL_PER_METER, Engine::m_nScreenH - (sawBody->GetPosition().y + sawRadius) *  Engine::PIXEL_PER_METER , 2.0f * sawRadius * Engine::PIXEL_PER_METER , 2.0f * sawRadius * Engine::PIXEL_PER_METER };
+	//SDL_RenderCopy(pRen, circularSawT, nullptr, &sawRect);
+	SDL_RenderCopyEx(pRen,circularSawT,nullptr,&sawRect,sawAngle,nullptr,SDL_FLIP_NONE);
+
 	SDL_RenderPresent(pRen);
 }
 

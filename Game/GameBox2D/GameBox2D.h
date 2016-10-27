@@ -32,12 +32,17 @@ private:
 	int boxCount;
 	MyBox** boxSet;
 	
+	// bar
 	float barW, barH;
 	b2Vec2 barPos;
 	b2Body* bar;
 	b2Joint* reJ;
 	SDL_Texture* BarT;
 
-	Bridge* bridge;
+	//circular Saw
+	SDL_Texture* circularSawT;
+	b2Body* sawBody;
+	float sawRadius;
 
+	Bridge* bridge;
 };

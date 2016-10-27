@@ -1,5 +1,8 @@
 bin/
 Box2D/
+Debug/
+
 *.tlog
+
 LearnSDL.VC.db
 VisualStudioFile/MultiThread/Debug/vc140.idb
