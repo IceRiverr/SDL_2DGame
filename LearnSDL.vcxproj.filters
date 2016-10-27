@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{a2aad96e-2110-484a-a49a-0157cb0e396c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{b2d8848f-aaee-4dd9-912e-c355df298a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\ARPG">
+      <UniqueIdentifier>{9b8ca351-7216-4c4a-aa2c-1555ac7acc55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Box2D">
+      <UniqueIdentifier>{5f0b8e40-4642-4f3d-9226-088d303ecde8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Game\GameLearn.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tool.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GamePhysics2D.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameTemplate.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sprite.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameTetris.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameARPG\GameARPG.cpp">
+      <Filter>Game\ARPG</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameFractal.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameBox2D\GameBox2D.cpp">
+      <Filter>Game\Box2D</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game\GameLearn.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tool.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GamePhysics2D.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameTemplate.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sprite.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameTetris.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameARPG\GameARPG.h">
+      <Filter>Game\ARPG</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IGame.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameFractal.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture2D.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameBox2D\GameBox2D.h">
+      <Filter>Game\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameBox2D\MyBox.h">
+      <Filter>Game\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameBox2D\Bridge.h">
+      <Filter>Game\Box2D</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
