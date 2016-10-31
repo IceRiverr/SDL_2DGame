@@ -69,10 +69,10 @@ public:
 		pSprite->AddRef();
 	}
 
-	SDL_Rect GetRenderRect()
+	SDL_Rect GetRenderRect(int screenW, int screenH)
 	{
 		b2Vec2 position = body->GetPosition();
-		SDL_Rect rt = { static_cast<int>((position.x - w / 2) * Engine::PIXEL_PER_METER), static_cast<int>(Engine::m_nScreenH - (position.y + h / 2) *Engine::PIXEL_PER_METER), static_cast<int>(w * Engine::PIXEL_PER_METER), static_cast<int>(h*Engine::PIXEL_PER_METER) };
+		SDL_Rect rt = { static_cast<int>((position.x - w / 2) * Engine::PIXEL_PER_METER), static_cast<int>(screenH - (position.y + h / 2) *Engine::PIXEL_PER_METER), static_cast<int>(w * Engine::PIXEL_PER_METER), static_cast<int>(h*Engine::PIXEL_PER_METER) };
 		return rt;
 	}
 
@@ -88,8 +88,8 @@ public:
 		return center;
 	}
 
-	void Render()
+	void Render(SDL_Renderer* pRen, int screenW, int screenH)
 	{
-		SDL_RenderCopyEx(Engine::GetRenderer(), sprite->m_pTex, nullptr, &GetRenderRect(), GetAngle(), &GetCenter(), SDL_FLIP_NONE);
+		SDL_RenderCopyEx(pRen, sprite->m_pTex, nullptr, &GetRenderRect(screenW, screenH), GetAngle(), &GetCenter(), SDL_FLIP_NONE);
 	}
 };

@@ -1,5 +1,6 @@
 
 #include "IGame.h"
+#include "Window.h"
 
 class GameTemplate : public IGame
 {
@@ -14,6 +15,7 @@ public:
 	virtual void HandleEvent(SDL_Event& e);
 
 private:
+	Window* m_pMainWindow;
 	SDL_Texture* BgT;
 	SDL_Texture* DotT;
 	SDL_Rect Camera;
@@ -26,6 +28,4 @@ private:
 	float AngleVel;
 	
 	int MapW, MapH;
-	int ScreenW, ScreenH;
-
 };

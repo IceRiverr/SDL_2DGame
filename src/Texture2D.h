@@ -5,7 +5,7 @@
 class Textrue2D
 {
 public:
-	Textrue2D(std::string file);
+	Textrue2D(SDL_Renderer* pRen ,std::string file);
 	~Textrue2D();
 
 	void AddRef();

@@ -1,6 +1,7 @@
 
 #pragma  once
 #include "IGame.h"
+#include "Window.h"
 
 class GameLearn : public IGame
 {
@@ -14,6 +15,7 @@ public:
 	virtual void HandleEvent(SDL_Event& e);
 	
 private:
+	Window* m_pMainWindow;
 	SDL_Texture* pBackgroundTex;
 	SDL_Texture* pImageTex;
 	SDL_Texture* pImage1Tex;

@@ -1,6 +1,7 @@
 
 #include "IGame.h"
 #include <vector>
+#include "Window.h"
 
 enum DirectionType
 {
@@ -21,6 +22,8 @@ public:
 	virtual void HandleEvent(SDL_Event& e);
 
 private:
+	Window* m_pMainWindow;
+
 	std::string basePath;
 	SDL_Texture* tile1T;
 	SDL_Texture* tile2T;

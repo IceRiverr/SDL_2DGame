@@ -52,7 +52,7 @@ public:
 		world->CreateJoint(&rj);
 	}
 
-	void Render(SDL_Texture* sprite)
+	void Render(SDL_Renderer* pRen,SDL_Texture* sprite, int screenW, int screenH)
 	{
 		for (int i = 0; i < bridgeCount; ++i)
 		{
@@ -60,12 +60,12 @@ public:
 			float angle = -bridge[i]->GetAngle() * degreePerRadian;
 
 			SDL_Rect destRect = { (worldPos.x - boxW*0.5f) * Engine::PIXEL_PER_METER, 
-									Engine::m_nScreenH - (worldPos.y + boxH*0.5f) * Engine::PIXEL_PER_METER,
+									screenH - (worldPos.y + boxH*0.5f) * Engine::PIXEL_PER_METER,
 									boxW * Engine::PIXEL_PER_METER, boxH * Engine::PIXEL_PER_METER};
 
 			SDL_Point center = { 0.5f * boxW * Engine::PIXEL_PER_METER, 0.5f * boxH * Engine::PIXEL_PER_METER };
 		
-			SDL_RenderCopyEx(Engine::GetRenderer(), sprite, nullptr, &destRect, angle, &center, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(pRen, sprite, nullptr, &destRect, angle, &center, SDL_FLIP_NONE);
 		}
 	}
 

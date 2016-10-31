@@ -3,9 +3,9 @@
 #include "Tool.h"
 #include "Engine.h"
 
-Textrue2D::Textrue2D(std::string file)
+Textrue2D::Textrue2D(SDL_Renderer* pRen,std::string file)
 {
-	m_pTex = LoadImage(Engine::GetRenderer(), file);
+	m_pTex = LoadImage(pRen, file);
 	SDL_QueryTexture(m_pTex, nullptr, nullptr, &m_nWidth, &m_nHeight);
 
 	m_File = file;

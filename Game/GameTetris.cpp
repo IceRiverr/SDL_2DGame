@@ -2,6 +2,7 @@
 
 GameTetris::GameTetris() : IGame()
 {
+	m_pMainWindow = nullptr;
 	MapW = 10;
 	MapH = 20;
 
@@ -26,8 +27,8 @@ GameTetris::~GameTetris()
 
 int GameTetris::Init()
 {
-	SDL_SetWindowSize(Engine::GetMainWindow(), 540, 720);
-	SDL_SetWindowTitle(Engine::GetMainWindow(), "Tetris");
+	m_pMainWindow = new Window();
+	m_pMainWindow->Init(540, 720, "Tetris");
 
 	MapArea = { 10,10, MapW * TileSize, MapH * MapH};
 	PosX = MapW / 2;
@@ -47,9 +48,8 @@ int GameTetris::Init()
 	}
 
 	// Tile 
-	SDL_Renderer* pRen = Engine::GetRenderer();
 	std::string TileP = std::string(SDL_GetBasePath()) + "Resources\\topdown_shooter\\PNG\\Tiles\\tile_196.png";
-	TileT = LoadImage(pRen, TileP);
+	TileT = LoadImage(m_pMainWindow->m_pRenderer, TileP);
 
 	// Table
 	for (int i = 0; i < MapW*MapH; ++i)
@@ -130,7 +130,7 @@ void GameTetris::Update(float dt)
 
 void GameTetris::Render()
 {
-	SDL_Renderer* pRen = Engine::GetRenderer();
+	SDL_Renderer* pRen = m_pMainWindow->m_pRenderer;
 	SDL_SetRenderDrawColor(pRen, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(pRen);
 

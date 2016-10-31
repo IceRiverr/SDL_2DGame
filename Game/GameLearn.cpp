@@ -5,6 +5,7 @@
 
 GameLearn::GameLearn():IGame()
 {
+	m_pMainWindow = nullptr;
 	clipIndex = 0;
 	posX = 0;
 	posY = 0;
@@ -19,6 +20,9 @@ GameLearn::~GameLearn()
 
 int GameLearn::Init()
 {
+	m_pMainWindow = new Window();
+	m_pMainWindow->Init(800, 600, "SDL_Learn");
+
 	std::string resourcePath = std::string(SDL_GetBasePath()) + "Resources\\";
 	std::string BackgroundPath = resourcePath + "background.png";
 	std::string imagePath = resourcePath + "image.png";
@@ -28,13 +32,13 @@ int GameLearn::Init()
 
 	try
 	{
-		pBackgroundTex = LoadImage(Engine::GetRenderer(), BackgroundPath);
-		pImageTex = LoadImage(Engine::GetRenderer(), imagePath);
-		pImage1Tex = LoadImage(Engine::GetRenderer(), image1Path);
-		pImageSheetTex = LoadImage(Engine::GetRenderer(), imageSheetPath);
+		pBackgroundTex = LoadImage(m_pMainWindow->m_pRenderer, BackgroundPath);
+		pImageTex = LoadImage(m_pMainWindow->m_pRenderer, imagePath);
+		pImage1Tex = LoadImage(m_pMainWindow->m_pRenderer, image1Path);
+		pImageSheetTex = LoadImage(m_pMainWindow->m_pRenderer, imageSheetPath);
 
 		SDL_Color fontColor = { 0,0, 0,255 };
-		pTextTex = RenderText(Engine::GetRenderer(), "TTF font is cool!!! HHH", fontPath, fontColor, 32);
+		pTextTex = RenderText(m_pMainWindow->m_pRenderer, "TTF font is cool!!! HHH", fontPath, fontColor, 32);
 	}
 	catch (const std::runtime_error& e)
 	{
@@ -67,22 +71,22 @@ void GameLearn::Update(float dt)
 
 void GameLearn::Render()
 {
-	SDL_RenderClear(Engine::GetRenderer());
+	SDL_RenderClear(m_pMainWindow->m_pRenderer);
 	int w, h;
 	SDL_QueryTexture(pBackgroundTex, NULL, NULL, &w, &h);
-	RenderTexture(Engine::GetRenderer(), 0, 0, pBackgroundTex);
-	RenderTexture(Engine::GetRenderer(), w, 0, pBackgroundTex);
-	RenderTexture(Engine::GetRenderer(), 0, h, pBackgroundTex);
-	RenderTexture(Engine::GetRenderer(), w, h, pBackgroundTex);
+	RenderTexture(m_pMainWindow->m_pRenderer, 0, 0, pBackgroundTex);
+	RenderTexture(m_pMainWindow->m_pRenderer, w, 0, pBackgroundTex);
+	RenderTexture(m_pMainWindow->m_pRenderer, 0, h, pBackgroundTex);
+	RenderTexture(m_pMainWindow->m_pRenderer, w, h, pBackgroundTex);
 
 	SDL_QueryTexture(pCurrImageTex, NULL, NULL, &w, &h);
-	int x = Engine::GetEngine()->m_nScreenW / 2 - w / 2;
-	int y = Engine::GetEngine()->m_nScreenH / 2 - h / 2;
+	int x = m_pMainWindow->m_nScreenW / 2 - w / 2;
+	int y = m_pMainWindow->m_nScreenH / 2 - h / 2;
 
-	RenderTexture(Engine::GetRenderer(), x, y, pCurrImageTex);
+	RenderTexture(m_pMainWindow->m_pRenderer, x, y, pCurrImageTex);
 
-	RenderTexture(Engine::GetRenderer(), posX, posY, pImageSheetTex, &clips[clipIndex]);
-	RenderTexture(Engine::GetRenderer(), posX, posY, pTextTex);
+	RenderTexture(m_pMainWindow->m_pRenderer, posX, posY, pImageSheetTex, &clips[clipIndex]);
+	RenderTexture(m_pMainWindow->m_pRenderer, posX, posY, pTextTex);
 
 	float deltaTime = time / 1000.0f;
 	deltaTime = ((int)(deltaTime * 10.0f)) / 10.0f;
@@ -91,17 +95,17 @@ void GameLearn::Render()
 
 	std::string currTime = "Time: " + ss.str();
 	SDL_Color fontColor = { 0,0, 0,255 };
-	pTimeTex = RenderText(Engine::GetRenderer(), currTime, fontPath, fontColor, 32);
+	pTimeTex = RenderText(m_pMainWindow->m_pRenderer, currTime, fontPath, fontColor, 32);
 
-	RenderTexture(Engine::GetRenderer(), posX, posY + 100, pTimeTex);
+	RenderTexture(m_pMainWindow->m_pRenderer, posX, posY + 100, pTimeTex);
 
 	SDL_Rect destRect = { 100, 100, 200, 200 };
 	SDL_Point pivot = { 100, 100 };
 
-	SDL_RenderCopyEx(Engine::GetRenderer(), pImageTex, NULL, &destRect, angle, &pivot, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(m_pMainWindow->m_pRenderer, pImageTex, NULL, &destRect, angle, &pivot, SDL_FLIP_NONE);
 	
 
-	SDL_RenderPresent(Engine::GetRenderer());
+	SDL_RenderPresent(m_pMainWindow->m_pRenderer);
 }
 
 void GameLearn::Destroy()
