@@ -19,7 +19,6 @@ private:
 	Window* m_pMainWindow;
 	SDL_Texture* BgT;
 	SDL_Texture* DotT;
-	SDL_Rect Camera;
 	SDL_Surface* MainWindowSurf;
 
 	int DotX, DotY;

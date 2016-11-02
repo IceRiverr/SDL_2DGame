@@ -30,7 +30,7 @@ int Window::Init(int w, int h, char* title)
 	m_nScreenH = h;
 	m_Title = title;
 
-	m_pWindow = SDL_CreateWindow(m_Title, 100, 100, m_nScreenW, m_nScreenH, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	m_pWindow = SDL_CreateWindow(m_Title, 100, 100, m_nScreenW, m_nScreenH, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 	if (!m_pWindow)
 	{
 		std::cout << SDL_GetError() << std::endl;

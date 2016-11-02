@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game\GameARPG\GameARPG.cpp" />
+    <ClCompile Include="Game\GameBox2D\DrawDebug.cpp" />
     <ClCompile Include="Game\GameBox2D\GameBox2D.cpp" />
     <ClCompile Include="Game\GameFractal.cpp" />
     <ClCompile Include="Game\GameLearn.cpp" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="Game\GameARPG\GameARPG.h" />
     <ClInclude Include="Game\GameBox2D\Bridge.h" />
+    <ClInclude Include="Game\GameBox2D\DrawDebug.h" />
     <ClInclude Include="Game\GameBox2D\GameBox2D.h" />
     <ClInclude Include="Game\GameBox2D\MyBox.h" />
     <ClInclude Include="Game\GameFractal.h" />
@@ -150,8 +152,10 @@
     <ClInclude Include="Game\GameTemplate.h" />
     <ClInclude Include="Game\GameTetris.h" />
     <ClInclude Include="Game\IGame.h" />
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Header.h" />
+    <ClInclude Include="src\MathLib.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Texture2D.h" />
     <ClInclude Include="src\Tool.h" />

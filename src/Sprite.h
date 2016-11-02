@@ -1,6 +1,8 @@
 
 #pragma once
 #include "Header.h"
+#include "Camera.h"
+#include "Engine.h"
 
 class Sprite
 {
@@ -9,13 +11,18 @@ public:
 	~Sprite();
 
 	void Init();
-	void Update();
-	void Render();
+	void Draw(Camera* pCam = nullptr);
 	void Destroy();
 
-	void SetImageFile(const char* ImageFile);
+	void SetTexure(SDL_Texture* pTex)
+	{
+		if(m_pTexture!= pTex)
+			m_pTexture = pTex;
+	}
+
+	float x, y, angle;
+	int w, h;
+private:
 	
-	int x, y;
-	std::string m_sImageFile;
-	SDL_Texture* m_pImage;
+	SDL_Texture* m_pTexture;
 };

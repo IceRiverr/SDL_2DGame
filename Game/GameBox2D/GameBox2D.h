@@ -6,6 +6,7 @@
 #include "MyBox.h"
 #include "Bridge.h"
 #include "Window.h"
+#include "DrawDebug.h"
 
 class GameBox2D : public IGame
 {

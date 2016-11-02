@@ -1,17 +1,16 @@
 
 #include "Sprite.h"
 
+
 Sprite::Sprite()
-	: m_pImage(nullptr)
-	, x(0)
-	, y(0)
+	: x(0), y(0), angle(0), w(-1), h(-1)
 {
 
 }
 
 Sprite::~Sprite()
 {
-
+	Destroy();
 }
 
 void Sprite::Init()
@@ -19,22 +18,20 @@ void Sprite::Init()
 
 }
 
-void Sprite::Update()
+void Sprite::Draw(Camera* pCam)
 {
+	SDL_Rect drawRect;
+	if (pCam == nullptr)
+	{
+		drawRect = {};
 
-}
+		SDL_RenderCopyEx(Engine::get)
+	}
 
-void Sprite::Render()
-{
 
 }
 
 void Sprite::Destroy()
 {
-
-}
-
-void Sprite::SetImageFile(const char* ImageFile)
-{
-	m_sImageFile = std::string(ImageFile);
+	SDL_DestroyTexture(m_pTexture);
 }

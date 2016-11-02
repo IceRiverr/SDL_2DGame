@@ -18,7 +18,7 @@ int main(int, char**)
 	Engine* pEngine = new Engine();
 	pEngine->Init();
 
-	IGame* pGame = new GameBox2D();
+	IGame* pGame = new GameARPG();
 	pGame->Init();
 
 	Uint32 currentTime = SDL_GetTicks();

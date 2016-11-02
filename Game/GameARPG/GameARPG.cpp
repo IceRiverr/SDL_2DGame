@@ -47,10 +47,7 @@ int GameARPG::Init()
 	m_pMainWindow = new Window();
 	m_pMainWindow->Init(800, 600, "ARPG");
 
-	Camera.x = 0;
-	Camera.y = 0;
-	Camera.w = m_pMainWindow->m_nScreenW;
-	Camera.h = m_pMainWindow->m_nScreenH;
+	Engine::GetEngine().CreateCamera(0,0, m_pMainWindow->m_nScreenW, m_pMainWindow->m_nScreenH);
 
 	TestBtn.Area.y = 10;
 	TestBtn.Area.w = 100;
@@ -97,16 +94,17 @@ void GameARPG::Update(float dt)
 		DotAngle -= 360.0f;
 
 	// Camera
-	Camera.x = DotX + DotSize / 2 - m_pMainWindow->m_nScreenW / 2;
-	Camera.y = DotY + DotSize / 2 - m_pMainWindow->m_nScreenH / 2;
-	if (Camera.x < 0) 
-		Camera.x = 0;
-	if (Camera.y < 0)
-		Camera.y = 0;
-	if (Camera.x > MapW - Camera.w)
-		Camera.x = MapW - Camera.w;
-	if (Camera.y > MapH - Camera.h)
-		Camera.y = MapH - Camera.h;
+	Camera& camera = Engine::GetCamera();
+	camera.x = DotX + DotSize / 2 - m_pMainWindow->m_nScreenW / 2;
+	camera.y = DotY + DotSize / 2 - m_pMainWindow->m_nScreenH / 2;
+	if (camera.x < 0)
+		camera.x = 0;
+	if (camera.y < 0)
+		camera.y = 0;
+	if (camera.x > MapW - camera.w)
+		camera.x = MapW - camera.w;
+	if (camera.y > MapH - camera.h)
+		camera.y = MapH - camera.h;
 
 	if (bInputFlag)
 	{
@@ -122,8 +120,8 @@ void GameARPG::Render()
 	SDL_SetRenderDrawColor(pRen, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(pRen);
 
-	SDL_RenderCopy(pRen,BgT,&Camera,nullptr);
-	SDL_Rect destRect = {DotX - Camera.x,DotY - Camera.y ,DotSize,DotSize };
+	SDL_RenderCopy(pRen,BgT,&Engine::GetCamera().GetCameraRect(),nullptr);
+	SDL_Rect destRect = {DotX - Engine::GetCamera().x,DotY - Engine::GetCamera().y ,DotSize,DotSize };
 	SDL_Point center = { DotSize / 2, DotSize / 2 };
 	SDL_RenderCopyEx(pRen, DotT, nullptr, &destRect, DotAngle, &center, SDL_FLIP_NONE);
 

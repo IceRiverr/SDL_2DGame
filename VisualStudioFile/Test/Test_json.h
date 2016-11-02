@@ -82,4 +82,5 @@ void json_read_test()
 			std::cout << chs.GetString() << std::endl;
 		}
 	}
+	fclose(fp);
 }

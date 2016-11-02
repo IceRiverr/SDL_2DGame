@@ -6,3 +6,7 @@
 
 #include <iostream>
 #include <sstream>
+
+#include "MathLib.h"
+
+#define ENGINE_DELETE(x) {delete (x); x = nullptr;}

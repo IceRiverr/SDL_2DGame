@@ -3,6 +3,8 @@
 
 
 Engine* Engine::m_pInstance = nullptr;
+Camera* Engine::m_pCamera = nullptr;
+
 int Engine::PIXEL_PER_METER = 16;
 double Engine::MS_PER_UPDATE = 1.0 / 60.0;
 float Engine::TIME_STEP = Engine::MS_PER_UPDATE;
@@ -50,4 +52,11 @@ void Engine::ShutDown()
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+
+	ENGINE_DELETE(m_pCamera);
+}
+
+void Engine::CreateCamera(int x, int y, int w, int h)
+{
+	m_pCamera = new Camera(x, y, w, h);
 }

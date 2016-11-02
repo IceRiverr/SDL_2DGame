@@ -34,6 +34,11 @@ int GameBox2D::Init()
 	world = new b2World(gravity);
 	world->SetAllowSleeping(doSleep);
 
+	SDL_b2Draw* drawDebug = new SDL_b2Draw();
+	drawDebug->SetFlags(0xFFFF);
+	drawDebug->SetRenderer(m_pMainWindow->m_pRenderer);
+	world->SetDebugDraw(drawDebug);
+
 	b2BodyDef groundBodyDef; 
 	groundBodyDef.position.Set(groundPoxX, groundPoxY);
 	b2Body* groundBody = world->CreateBody(&groundBodyDef);
@@ -142,6 +147,9 @@ void GameBox2D::Render()
 	SDL_RenderClear(pRen);
 
 	SDL_SetRenderDrawColor(pRen, 0xFF, 0, 0, 0);
+	
+	world->DrawDebugData();
+
 	SDL_Rect groundRect = { static_cast<int>((groundPoxX - groundBoxW *0.5f) * Engine::PIXEL_PER_METER),  static_cast<int>(m_pMainWindow->m_nScreenH - (groundPoxY + groundBoxH * 0.5f)* Engine::PIXEL_PER_METER),  static_cast<int>(groundBoxW* Engine::PIXEL_PER_METER),  static_cast<int>(groundBoxH* Engine::PIXEL_PER_METER) };
 	SDL_Rect fakeRect = {0, 500, 800, 32};
 	SDL_RenderFillRect(pRen,&groundRect);
@@ -188,6 +196,8 @@ void GameBox2D::Destroy()
 void GameBox2D::HandleEvent(SDL_Event& e)
 {
 	// If a key was pressed
+	m_pMainWindow->HandleEvent(e);
+
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 	{
 		switch (e.key.keysym.sym)

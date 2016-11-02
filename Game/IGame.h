@@ -16,10 +16,3 @@ public:
 private:
 };
 
-class GameInfo
-{
-	int ScreenWidth;
-	int ScreenHeight;
-	char* TitleName;
-};
-
