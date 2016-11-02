@@ -20,15 +20,13 @@ void Sprite::Init()
 
 void Sprite::Draw(Camera* pCam)
 {
-	SDL_Rect drawRect;
+	//SDL_Rect drawRect;
 	if (pCam == nullptr)
 	{
-		drawRect = {};
+		//drawRect = {};
 
-		SDL_RenderCopyEx(Engine::get)
+		//SDL_RenderCopyEx(Engine::get)
 	}
-
-
 }
 
 void Sprite::Destroy()

@@ -55,9 +55,6 @@
     <ClCompile Include="Game\GameBox2D\GameBox2D.cpp">
       <Filter>Game\Box2D</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="Game\GameBox2D\DrawDebug.cpp">
       <Filter>Game\Box2D</Filter>
     </ClCompile>
@@ -107,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="Game\GameBox2D\Bridge.h">
       <Filter>Game\Box2D</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Window.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameBox2D\DrawDebug.h">
       <Filter>Game\Box2D</Filter>

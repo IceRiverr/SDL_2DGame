@@ -2,7 +2,6 @@
 #pragma once
 #include "IGame.h"
 #include <vector>
-#include "Window.h"
 
 struct Triangle
 {
@@ -34,7 +33,6 @@ public:
 	void GenTri(const Triangle& t, int step);
 
 private:
-	Window* m_pMainWindow;
 	SDL_Texture* BoxT;
 	const static int BOX_SIZE;
 

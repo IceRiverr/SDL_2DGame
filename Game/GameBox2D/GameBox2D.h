@@ -5,7 +5,6 @@
 #include "Texture2D.h"
 #include "MyBox.h"
 #include "Bridge.h"
-#include "Window.h"
 #include "DrawDebug.h"
 
 class GameBox2D : public IGame
@@ -21,7 +20,6 @@ public:
 	virtual void HandleEvent(SDL_Event& e);
 
 private:
-	Window* m_pMainWindow;
 	SDL_Texture* BoxT;
 	b2World* world;
 	int32 velocityIterations;

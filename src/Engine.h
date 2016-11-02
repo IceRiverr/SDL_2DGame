@@ -11,6 +11,21 @@
  *
  */
 
+struct EngineConfig
+{
+	int PixelSize;
+	double FixedUpdateMS;
+};
+
+struct WindowInfo
+{
+	int ScreenW;
+	int ScreenH;
+
+	char* Title;
+	bool bMouseFocus;
+	bool bKeyboardFocus;
+};
 
 class Engine
 {
@@ -18,22 +33,32 @@ public:
 	Engine();
 	~Engine();
 
-	// 0 ok -1 error
 	int Init();
 	void ShutDown();
 
-	void CreateCamera(int x, int y, int w, int h);
+	int CreateCamera(int x, int y, int w, int h);
+	int CreateWindowAndRenderer(int w, int h, char* title);
 
-	static Engine& GetEngine() { return *m_pInstance; }
-	static Camera& GetCamera() { return *m_pCamera; }
+	void SetPixelSize(int pixelPerMeter) { m_EngineConfig.PixelSize = pixelPerMeter; }
 
-
+	static Engine* GetEngine()			{ return m_pInstance; }
+	static Camera* GetCamera()			{ return m_pCamera; }
+	static SDL_Window* GetWindow()		{ return m_pWindow; }
+	static SDL_Renderer* GetRenderer()	{ return m_pRenderer; }
+	WindowInfo& GetWindowInfo()			{ return m_WindowInfo; }
+	int ScreenW()						{ return m_WindowInfo.ScreenW; }
+	int ScreenH()						{ return m_WindowInfo.ScreenH; }
+	int PixelSize()						{ return m_EngineConfig.PixelSize; }
+	double FixedUpdateMS()				{ return m_EngineConfig.FixedUpdateMS; }
+	
 private:
 	static Engine* m_pInstance;
 	static Camera* m_pCamera;
+	static SDL_Window* m_pWindow;
+	static SDL_Renderer* m_pRenderer;
 
-public:
-	static int PIXEL_PER_METER;
-	static double MS_PER_UPDATE;
-	static float TIME_STEP;
+	WindowInfo m_WindowInfo;
+	EngineConfig m_EngineConfig;
 };
+
+void WindowHandleEvent(SDL_Event& e);

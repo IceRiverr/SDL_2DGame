@@ -72,7 +72,7 @@ public:
 	SDL_Rect GetRenderRect(int screenW, int screenH)
 	{
 		b2Vec2 position = body->GetPosition();
-		SDL_Rect rt = { static_cast<int>((position.x - w / 2) * Engine::PIXEL_PER_METER), static_cast<int>(screenH - (position.y + h / 2) *Engine::PIXEL_PER_METER), static_cast<int>(w * Engine::PIXEL_PER_METER), static_cast<int>(h*Engine::PIXEL_PER_METER) };
+		SDL_Rect rt = { static_cast<int>((position.x - w / 2) * Engine::GetEngine()->PixelSize()), static_cast<int>(screenH - (position.y + h / 2) *Engine::GetEngine()->PixelSize()), static_cast<int>(w * Engine::GetEngine()->PixelSize()), static_cast<int>(h*Engine::GetEngine()->PixelSize()) };
 		return rt;
 	}
 
@@ -84,7 +84,8 @@ public:
 
 	SDL_Point GetCenter()
 	{
-		SDL_Point center = { static_cast<int>(w * 0.5f * Engine::PIXEL_PER_METER), static_cast<int>(h * 0.5f * Engine::PIXEL_PER_METER) };
+		
+		SDL_Point center = { static_cast<int>(w * 0.5f * Engine::GetEngine()->PixelSize()), static_cast<int>(h * 0.5f * Engine::GetEngine()->PixelSize()) };
 		return center;
 	}
 

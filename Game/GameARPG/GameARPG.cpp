@@ -16,8 +16,6 @@ void QuitGame(Button& btn)
 
 GameARPG::GameARPG() : IGame()
 {
-	m_pMainWindow = nullptr;
-
 	DotX = DotY = 0;
 	VelX = VelY = 0;
 	DotVel = 8;
@@ -44,24 +42,23 @@ GameARPG::~GameARPG()
 
 int GameARPG::Init()
 {
-	m_pMainWindow = new Window();
-	m_pMainWindow->Init(800, 600, "ARPG");
-
-	Engine::GetEngine().CreateCamera(0,0, m_pMainWindow->m_nScreenW, m_pMainWindow->m_nScreenH);
+	Engine::GetEngine()->CreateWindowAndRenderer(800,600,"ARPG");
+	Engine::GetEngine()->CreateCamera(0,0, Engine::GetEngine()->ScreenW(), Engine::GetEngine()->ScreenH());
 
 	TestBtn.Area.y = 10;
 	TestBtn.Area.w = 100;
 	TestBtn.Area.h = 40;
-	TestBtn.Area.x = m_pMainWindow->m_nScreenW - 10 - TestBtn.Area.w;
+	TestBtn.Area.x = Engine::GetEngine()->ScreenW() - 10 - TestBtn.Area.w;
 	TestBtn.Name = "Exit";
 	TestBtn.CallBack = QuitGame;
 
 	std::string Path = std::string(SDL_GetBasePath()) + "Resources\\Other\\bg.jpg";
-	BgT = LoadImage(m_pMainWindow->m_pRenderer, Path);
+	
+	BgT = LoadImage(Engine::GetRenderer(), Path);
 	SDL_QueryTexture(BgT, nullptr, nullptr, &MapW, &MapH);
 
 	Path = std::string(SDL_GetBasePath()) + "Resources\\Other\\tile_134.png";
-	DotT = LoadImage(m_pMainWindow->m_pRenderer,Path);
+	DotT = LoadImage(Engine::GetRenderer(),Path);
 
 	FontPath = std::string(SDL_GetBasePath()) + "Resources\\SourceSansPro-Regular.ttf";
 	Font = TTF_OpenFont(FontPath.c_str(), FontSize);
@@ -69,7 +66,7 @@ int GameARPG::Init()
 		throw std::runtime_error("Failed to load font: " + FontPath + TTF_GetError());
 
 	FontColor = { 0x12,0x1a, 0x2a,0xff }; //ЗаєЦ 121a2a
-	TextT = RenderText(m_pMainWindow->m_pRenderer, Font, TestBtn.Name,  FontColor, FontSize);
+	TextT = RenderText(Engine::GetRenderer(), Font, TestBtn.Name,  FontColor, FontSize);
 	SDL_QueryTexture(TextT, nullptr, nullptr, &fontW, &fontH);
 
 	// InputFields
@@ -94,21 +91,21 @@ void GameARPG::Update(float dt)
 		DotAngle -= 360.0f;
 
 	// Camera
-	Camera& camera = Engine::GetCamera();
-	camera.x = DotX + DotSize / 2 - m_pMainWindow->m_nScreenW / 2;
-	camera.y = DotY + DotSize / 2 - m_pMainWindow->m_nScreenH / 2;
-	if (camera.x < 0)
-		camera.x = 0;
-	if (camera.y < 0)
-		camera.y = 0;
-	if (camera.x > MapW - camera.w)
-		camera.x = MapW - camera.w;
-	if (camera.y > MapH - camera.h)
-		camera.y = MapH - camera.h;
+	Camera* camera = Engine::GetCamera();
+	camera->x = DotX + DotSize / 2.0f - Engine::GetEngine()->ScreenW() / 2.0f;
+	camera->y = DotY + DotSize / 2.0f - Engine::GetEngine()->ScreenH() / 2.0f;
+	if (camera->x < 0)
+		camera->x = 0;
+	if (camera->y < 0)
+		camera->y = 0;
+	if (camera->x > MapW - camera->w)
+		camera->x = MapW - camera->w;
+	if (camera->y > MapH - camera->h)
+		camera->y = MapH - camera->h;
 
 	if (bInputFlag)
 	{
-		InputTextT = RenderText(m_pMainWindow->m_pRenderer, Font, InputText, FontColor, FontSize);
+		InputTextT = RenderText(Engine::GetRenderer(), Font, InputText, FontColor, FontSize);
 		bInputFlag = false;
 		SDL_QueryTexture(InputTextT, nullptr, nullptr, &InputTextW, &InputTextH);
 	}
@@ -116,12 +113,12 @@ void GameARPG::Update(float dt)
 
 void GameARPG::Render()
 {
-	SDL_Renderer* pRen = m_pMainWindow->m_pRenderer;
+	SDL_Renderer* pRen = Engine::GetRenderer();
 	SDL_SetRenderDrawColor(pRen, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(pRen);
 
-	SDL_RenderCopy(pRen,BgT,&Engine::GetCamera().GetCameraRect(),nullptr);
-	SDL_Rect destRect = {DotX - Engine::GetCamera().x,DotY - Engine::GetCamera().y ,DotSize,DotSize };
+	SDL_RenderCopy(pRen,BgT,&Engine::GetCamera()->GetCameraRect(),nullptr);
+	SDL_Rect destRect = {DotX - Engine::GetCamera()->x,DotY - Engine::GetCamera()->y ,DotSize,DotSize };
 	SDL_Point center = { DotSize / 2, DotSize / 2 };
 	SDL_RenderCopyEx(pRen, DotT, nullptr, &destRect, DotAngle, &center, SDL_FLIP_NONE);
 

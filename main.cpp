@@ -45,10 +45,10 @@ int main(int, char**)
 		previousTime = currentTime;
 		lag += deltaTime;
 
-		while (lag >= Engine::MS_PER_UPDATE)
+		while (lag >= Engine::GetEngine()->FixedUpdateMS())
 		{
-			pGame->Update(Engine::MS_PER_UPDATE);
-			lag -= Engine::MS_PER_UPDATE;
+			pGame->Update(Engine::GetEngine()->FixedUpdateMS());
+			lag -= Engine::GetEngine()->FixedUpdateMS();
 		}
 
 		pGame->Render();

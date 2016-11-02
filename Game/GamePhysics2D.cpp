@@ -13,7 +13,6 @@ int mapData[4][4] =
 
 GamePhysics2D::GamePhysics2D() : IGame()
 {
-	m_pMainWindow = nullptr;
 	acceleration = 500.0f;
 	speed = 0.0f;
 	direction = DirectionType::DOWN;
@@ -26,8 +25,7 @@ GamePhysics2D::~GamePhysics2D()
 
 int GamePhysics2D::Init()
 {
-	m_pMainWindow = new Window();
-	m_pMainWindow->Init(800,600,"Physics2D");
+	Engine::GetEngine()->CreateWindowAndRenderer(800, 600, "Physics2D");
 
 	basePath = std::string(SDL_GetBasePath()) + "Resources\\topdown_shooter\\PNG\\Tiles\\";
 	std::string tile1F = basePath + "tile_01.png";
@@ -36,20 +34,20 @@ int GamePhysics2D::Init()
 	std::string itemF = basePath + "tile_450.png";
 	std::string playerF = basePath + "tile_133.png";
 	
-	posX = m_pMainWindow->m_nScreenW *0.5f;
+	posX = Engine::GetEngine()->ScreenW() *0.5f;
 	posY = 0.0f;
-	m_Camera = { 0,0,m_pMainWindow->m_nScreenW , m_pMainWindow->m_nScreenH };
+	m_Camera = { 0,0,Engine::GetEngine()->ScreenW() , Engine::GetEngine()->ScreenH() };
 	m_nCameraMoveSpeed = 1;
 	m_bCameraMoveFlag = true;
 
 	try
 	{
-		tile1T = LoadImage(m_pMainWindow->m_pRenderer, tile1F);
-		tile2T = LoadImage(m_pMainWindow->m_pRenderer, tile2F);
-		backgroundT = LoadImage(m_pMainWindow->m_pRenderer, backgroundF);
-		itemT = LoadImage(m_pMainWindow->m_pRenderer, itemF);
+		tile1T = LoadImage(Engine::GetRenderer(), tile1F);
+		tile2T = LoadImage(Engine::GetRenderer(), tile2F);
+		backgroundT = LoadImage(Engine::GetRenderer(), backgroundF);
+		itemT = LoadImage(Engine::GetRenderer(), itemF);
 		SDL_SetTextureBlendMode(itemT, SDL_BLENDMODE_BLEND);
-		playerT = LoadImage(m_pMainWindow->m_pRenderer,playerF);
+		playerT = LoadImage(Engine::GetRenderer(),playerF);
 	}
 	catch (const std::runtime_error& e)
 	{
@@ -69,14 +67,14 @@ int GamePhysics2D::Init()
 	}
 
 	SDL_Rect viewPort = {100,10,630,470};
-	SDL_RenderSetViewport(m_pMainWindow->m_pRenderer, &viewPort);
+	SDL_RenderSetViewport(Engine::GetRenderer(), &viewPort);
 
 	return 0;
 }
 
 void GamePhysics2D::Update(float dt)
 {
-	if (direction == DirectionType::DOWN && posY > m_pMainWindow->m_nScreenH - 64)
+	if (direction == DirectionType::DOWN && posY > Engine::GetEngine()->ScreenH() - 64)
 		direction = DirectionType::UP;
 	if (direction == DirectionType::UP && posY < 0)
 		direction = DirectionType::DOWN;
@@ -102,7 +100,7 @@ void GamePhysics2D::Update(float dt)
 
 void GamePhysics2D::Render()
 {
-	SDL_Renderer* pRen = m_pMainWindow->m_pRenderer;
+	SDL_Renderer* pRen = Engine::GetRenderer();
 
 #if 1
 	SDL_SetRenderDrawColor(pRen, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -125,7 +123,7 @@ void GamePhysics2D::Render()
 
 	RenderTexture(pRen, (int)posX - m_Camera.x, (int)posY - m_Camera.y, itemT);
 
-	RenderTexture(pRen, (m_pMainWindow->m_nScreenW - m_nSpritePixel) / 2 , (m_pMainWindow->m_nScreenH - m_nSpritePixel) / 2, playerT);
+	RenderTexture(pRen, (Engine::GetEngine()->ScreenW() - m_nSpritePixel) / 2 , (Engine::GetEngine()->ScreenH() - m_nSpritePixel) / 2, playerT);
 
 	{
 		SDL_Rect rect = { 10,10,50,50 };

@@ -59,11 +59,11 @@ public:
 			b2Vec2 worldPos = bridge[i]->GetPosition();
 			float angle = -bridge[i]->GetAngle() * degreePerRadian;
 
-			SDL_Rect destRect = { (worldPos.x - boxW*0.5f) * Engine::PIXEL_PER_METER, 
-									screenH - (worldPos.y + boxH*0.5f) * Engine::PIXEL_PER_METER,
-									boxW * Engine::PIXEL_PER_METER, boxH * Engine::PIXEL_PER_METER};
+			SDL_Rect destRect = { (worldPos.x - boxW*0.5f) * Engine::GetEngine()->PixelSize(), 
+									screenH - (worldPos.y + boxH*0.5f) * Engine::GetEngine()->PixelSize(),
+									boxW * Engine::GetEngine()->PixelSize(), boxH * Engine::GetEngine()->PixelSize()};
 
-			SDL_Point center = { 0.5f * boxW * Engine::PIXEL_PER_METER, 0.5f * boxH * Engine::PIXEL_PER_METER };
+			SDL_Point center = { 0.5f * boxW * Engine::GetEngine()->PixelSize(), 0.5f * boxH * Engine::GetEngine()->PixelSize() };
 		
 			SDL_RenderCopyEx(pRen, sprite, nullptr, &destRect, angle, &center, SDL_FLIP_NONE);
 		}

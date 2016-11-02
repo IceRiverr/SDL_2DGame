@@ -1,7 +1,6 @@
 
 
 #include "IGame.h"
-#include "Window.h"
 
 enum Direction
 {
@@ -25,7 +24,6 @@ public:
 	void Clamp(int& x, int min, int max);
 
 private:
-	Window* m_pMainWindow;
 	int MapW;
 	int MapH;
 	SDL_Rect* Grid;

@@ -10,7 +10,6 @@ const float SIN60 = 0.8660254f;
 
 GameFractal::GameFractal() : IGame()
 {
-	m_pMainWindow = nullptr;
 }
 
 GameFractal::~GameFractal()
@@ -20,11 +19,10 @@ GameFractal::~GameFractal()
 
 int GameFractal::Init()
 {
-	m_pMainWindow = new Window();
-	m_pMainWindow->Init(1600, 1000, "Fractal");
-
+	Engine::GetEngine()->CreateWindowAndRenderer(1600, 1000, "Fractal");
+	
 	std::string BoxP = std::string(SDL_GetBasePath()) + "Resources\\topdown_shooter\\PNG\\Tiles\\tile_196.png";
-	BoxT = LoadImage(m_pMainWindow->m_pRenderer, BoxP);
+	BoxT = LoadImage(Engine::GetRenderer(), BoxP);
 
 	Triangle t = {800,900,1};
 	GenTri(t, 7);
@@ -39,7 +37,7 @@ void GameFractal::Update(float dt)
 
 void GameFractal::Render()
 {
-	SDL_Renderer* pRen = m_pMainWindow->m_pRenderer;
+	SDL_Renderer* pRen = Engine::GetRenderer();
 	SDL_SetRenderDrawColor(pRen, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(pRen);
 

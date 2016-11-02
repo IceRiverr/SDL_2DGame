@@ -3,8 +3,6 @@
 
 GameBox2D::GameBox2D() : IGame()
 {
-	m_pMainWindow = nullptr;
-
 	groundPoxX = 25.0f;
 	groundPoxY = 2.0f;
 	groundBoxW = 50.0f;
@@ -21,13 +19,12 @@ GameBox2D::~GameBox2D()
 
 int GameBox2D::Init()
 {
-	m_pMainWindow = new Window();
-	m_pMainWindow->Init(800, 600, "Box2D");
-
+	Engine::GetEngine()->CreateWindowAndRenderer(800, 600, "Box2D");
+	
 	std::string BoxP = std::string(SDL_GetBasePath()) + "Resources\\topdown_shooter\\PNG\\Tiles\\tile_196.png";
-	BoxT = LoadImage(m_pMainWindow->m_pRenderer, BoxP);
+	BoxT = LoadImage(Engine::GetRenderer(), BoxP);
 
-	m_pBoxTex = new Textrue2D(m_pMainWindow->m_pRenderer,BoxP);
+	m_pBoxTex = new Textrue2D(Engine::GetRenderer(),BoxP);
 
 	b2Vec2 gravity(0.0f, -10.0f);
 	bool doSleep = true;
@@ -36,7 +33,7 @@ int GameBox2D::Init()
 
 	SDL_b2Draw* drawDebug = new SDL_b2Draw();
 	drawDebug->SetFlags(0xFFFF);
-	drawDebug->SetRenderer(m_pMainWindow->m_pRenderer);
+	drawDebug->SetRenderer(Engine::GetRenderer());
 	world->SetDebugDraw(drawDebug);
 
 	b2BodyDef groundBodyDef; 
@@ -72,7 +69,7 @@ int GameBox2D::Init()
 	barW = 20.0f;
 	barH = 1.0f;
 	std::string BarP = std::string(SDL_GetBasePath()) + "Resources\\Other\\red_button00.png";
-	BarT = LoadImage(m_pMainWindow->m_pRenderer, BarP);
+	BarT = LoadImage(Engine::GetRenderer(), BarP);
 	barPos = b2Vec2(40.0f, 35.0f);
 	b2BodyDef barDef;
 	barDef.type = b2BodyType::b2_dynamicBody;
@@ -100,7 +97,7 @@ int GameBox2D::Init()
 	// circular saw
 	sawRadius = 1.6f;
 	std::string circularSawP = std::string(SDL_GetBasePath()) + "Resources\\lettertiles\\PNG\\Wood\\letter_Q.png";
-	circularSawT = LoadImage(m_pMainWindow->m_pRenderer, circularSawP);
+	circularSawT = LoadImage(Engine::GetRenderer(), circularSawP);
 
 	b2BodyDef sawBD;
 	sawBD.type = b2_dynamicBody;
@@ -137,12 +134,12 @@ int GameBox2D::Init()
 
 void GameBox2D::Update(float dt)
 {
-	world->Step(Engine::TIME_STEP, velocityIterations, positionIterations);
+	world->Step(Engine::GetEngine()->PixelSize(), velocityIterations, positionIterations);
 }
 
 void GameBox2D::Render()
 {
-	SDL_Renderer* pRen = m_pMainWindow->m_pRenderer;
+	SDL_Renderer* pRen = Engine::GetRenderer();
 	SDL_SetRenderDrawColor(pRen, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(pRen);
 
@@ -150,25 +147,25 @@ void GameBox2D::Render()
 	
 	world->DrawDebugData();
 
-	SDL_Rect groundRect = { static_cast<int>((groundPoxX - groundBoxW *0.5f) * Engine::PIXEL_PER_METER),  static_cast<int>(m_pMainWindow->m_nScreenH - (groundPoxY + groundBoxH * 0.5f)* Engine::PIXEL_PER_METER),  static_cast<int>(groundBoxW* Engine::PIXEL_PER_METER),  static_cast<int>(groundBoxH* Engine::PIXEL_PER_METER) };
+	SDL_Rect groundRect = { static_cast<int>((groundPoxX - groundBoxW *0.5f) * Engine::GetEngine()->PixelSize()),  static_cast<int>(Engine::GetEngine()->ScreenH() - (groundPoxY + groundBoxH * 0.5f)* Engine::GetEngine()->PixelSize()),  static_cast<int>(groundBoxW* Engine::GetEngine()->PixelSize()),  static_cast<int>(groundBoxH* Engine::GetEngine()->PixelSize()) };
 	SDL_Rect fakeRect = {0, 500, 800, 32};
 	SDL_RenderFillRect(pRen,&groundRect);
 
 	for (int i = 0; i < boxCount; ++i)
 	{
-		boxSet[i]->Render(pRen, m_pMainWindow->m_nScreenW, m_pMainWindow->m_nScreenH);
+		boxSet[i]->Render(pRen, Engine::GetEngine()->ScreenW(), Engine::GetEngine()->ScreenH());
 	}
 
 	float angle = -bar->GetAngle() * 57.2775475f;
-	SDL_Point center= { barW * 0.5f * Engine::PIXEL_PER_METER , barH * 0.5f * Engine::PIXEL_PER_METER };
-	SDL_Rect barRect = { (bar->GetPosition().x - barW * 0.5f) * Engine::PIXEL_PER_METER ,m_pMainWindow->m_nScreenH - (bar->GetPosition().y + barH * 0.5f) *  Engine::PIXEL_PER_METER , barW * Engine::PIXEL_PER_METER , barH* Engine::PIXEL_PER_METER};
+	SDL_Point center= { barW * 0.5f * Engine::GetEngine()->PixelSize() , barH * 0.5f * Engine::GetEngine()->PixelSize() };
+	SDL_Rect barRect = { (bar->GetPosition().x - barW * 0.5f) * Engine::GetEngine()->PixelSize() ,Engine::GetEngine()->ScreenH() - (bar->GetPosition().y + barH * 0.5f) *  Engine::GetEngine()->PixelSize() , barW * Engine::GetEngine()->PixelSize() , barH* Engine::GetEngine()->PixelSize()};
 	SDL_RenderCopyEx(pRen, BarT, nullptr, &barRect, angle, &center, SDL_FLIP_HORIZONTAL);
 
-	bridge->Render(pRen,BarT, m_pMainWindow->m_nScreenW, m_pMainWindow->m_nScreenH);
+	bridge->Render(pRen,BarT, Engine::GetEngine()->ScreenW(), Engine::GetEngine()->ScreenH());
 
 	// saw
 	float sawAngle = -sawBody->GetAngle() * 57.2775475f;
-	SDL_Rect sawRect = {(sawBody->GetPosition().x - sawRadius) * Engine::PIXEL_PER_METER,  m_pMainWindow->m_nScreenH - (sawBody->GetPosition().y + sawRadius) *  Engine::PIXEL_PER_METER , 2.0f * sawRadius * Engine::PIXEL_PER_METER , 2.0f * sawRadius * Engine::PIXEL_PER_METER };
+	SDL_Rect sawRect = {(sawBody->GetPosition().x - sawRadius) * Engine::GetEngine()->PixelSize(),  Engine::GetEngine()->ScreenH() - (sawBody->GetPosition().y + sawRadius) *  Engine::GetEngine()->PixelSize() , 2.0f * sawRadius * Engine::GetEngine()->PixelSize() , 2.0f * sawRadius * Engine::GetEngine()->PixelSize() };
 	//SDL_RenderCopy(pRen, circularSawT, nullptr, &sawRect);
 	SDL_RenderCopyEx(pRen,circularSawT,nullptr,&sawRect,sawAngle,nullptr,SDL_FLIP_NONE);
 
@@ -188,16 +185,10 @@ void GameBox2D::Destroy()
 
 	m_pBoxTex->Release();
 	delete m_pBoxTex;
-
-	delete m_pMainWindow;
-	m_pMainWindow = nullptr;
 }
 
 void GameBox2D::HandleEvent(SDL_Event& e)
 {
-	// If a key was pressed
-	m_pMainWindow->HandleEvent(e);
-
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 	{
 		switch (e.key.keysym.sym)

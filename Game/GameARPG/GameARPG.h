@@ -1,7 +1,6 @@
 
 #pragma once
 #include "IGame.h"
-#include "Window.h"
 
 class GameARPG : public IGame
 {
@@ -16,7 +15,6 @@ public:
 	virtual void HandleEvent(SDL_Event& e);
 
 private:
-	Window* m_pMainWindow;
 	SDL_Texture* BgT;
 	SDL_Texture* DotT;
 	SDL_Surface* MainWindowSurf;

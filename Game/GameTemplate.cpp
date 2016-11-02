@@ -3,7 +3,6 @@
 
 GameTemplate::GameTemplate() : IGame()
 {
-	m_pMainWindow = nullptr;
 	DotX = DotY = 0;
 	VelX = VelY = 0;
 	DotVel = 8;
@@ -20,21 +19,20 @@ GameTemplate::~GameTemplate()
 
 int GameTemplate::Init()
 {
-	m_pMainWindow = new Window();
-	m_pMainWindow->Init(640, 480,"Template");
+	Engine::GetEngine()->CreateWindowAndRenderer(640, 480, "Template");
 
 	Camera.x = 0;
 	Camera.y = 0;
-	Camera.w = m_pMainWindow->m_nScreenW;
-	Camera.h = m_pMainWindow->m_nScreenH;
+	Camera.w = Engine::GetEngine()->ScreenW();
+	Camera.h = Engine::GetEngine()->ScreenH();
 
 	
 	std::string Path = std::string(SDL_GetBasePath()) + "Resources\\Other\\bg.jpg";
-	BgT = LoadImage(m_pMainWindow->m_pRenderer, Path);
+	BgT = LoadImage(Engine::GetRenderer(), Path);
 	SDL_QueryTexture(BgT, nullptr, nullptr, &MapW, &MapH);
 
 	Path = std::string(SDL_GetBasePath()) + "Resources\\Other\\tile_134.png";
-	DotT = LoadImage(m_pMainWindow->m_pRenderer,Path);
+	DotT = LoadImage(Engine::GetRenderer(),Path);
 
 	return 0;
 }
@@ -55,8 +53,8 @@ void GameTemplate::Update(float dt)
 		DotAngle -= 360.0f;
 
 	// Camera
-	Camera.x = DotX + DotSize / 2 - m_pMainWindow->m_nScreenW / 2;
-	Camera.y = DotY + DotSize / 2 - m_pMainWindow->m_nScreenH/ 2;
+	Camera.x = DotX + DotSize / 2 - Engine::GetEngine()->ScreenW() / 2;
+	Camera.y = DotY + DotSize / 2 - Engine::GetEngine()->ScreenH()/ 2;
 	if (Camera.x < 0) 
 		Camera.x = 0;
 	if (Camera.y < 0)
@@ -69,7 +67,7 @@ void GameTemplate::Update(float dt)
 
 void GameTemplate::Render()
 {
-	SDL_Renderer* pRen= m_pMainWindow->m_pRenderer;
+	SDL_Renderer* pRen= Engine::GetRenderer();
 	SDL_SetRenderDrawColor(pRen, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(pRen);
 
