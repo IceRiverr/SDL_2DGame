@@ -62,3 +62,4 @@ private:
 };
 
 void WindowHandleEvent(SDL_Event& e);
+Engine* GetEngine()						{return Engine::GetEngine();}
